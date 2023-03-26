@@ -1,0 +1,89 @@
+using System;
+namespace VeriYapilarOdev
+{
+    class node
+    {
+        public int veri;
+        public node ileri;
+        public node geri;
+        
+        public node(int veri)
+        {
+            this.veri = veri;
+            ileri = null;
+            geri = null;
+        }
+    }
+
+    class cbliste
+    {
+        public node bas;
+        public node son;
+        public cbliste()
+        {
+            bas = null;
+            son = null;
+        }
+
+        public void basaEkle(node yeni)
+        {
+            if (son == null)
+                son = yeni;
+            else
+                bas.geri = yeni;
+            yeni.ileri = bas;
+            yeni.geri = null;
+            bas = yeni;
+
+        }
+        public void sonaEkle(node yeni)
+        {
+            if (bas == null)
+                bas = yeni;
+            else
+                son.ileri = yeni;
+            yeni.geri = son;
+            son = yeni;
+        }
+        public void yaz()
+        {
+            node temp = bas;
+            while (temp != null)
+            {
+                Console.Write(temp.veri + " -> ");
+                temp = temp.ileri;
+            }
+        }
+    }
+    class Odev
+    {
+        static void Main(String[] args)
+        {
+            Console.WriteLine("bagli liste uzunlugu giriniz...");
+            int adet = Convert.ToInt32(Console.ReadLine());
+            int sayi;
+
+            cbliste liste1 = new cbliste();
+
+            for (int i = 0; i < adet; i++)
+            {
+                Console.WriteLine("degerleri giriniz: ");
+                sayi = Convert.ToInt32(Console.ReadLine());
+                node n = new node(sayi);
+                Console.WriteLine("nereye eklensin: \n1=BASA EKLE\n2=SONA EKLE");
+                int a = Convert.ToInt32(Console.ReadLine());
+                switch (a) 
+                {
+                    case 1:
+                        liste1.basaEkle(n);
+                        break;
+                    case 2:
+                        liste1.sonaEkle(n);
+                        break;
+                }
+            }
+            
+            liste1.yaz();
+        }
+    }
+}
