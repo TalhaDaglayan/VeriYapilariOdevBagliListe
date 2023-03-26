@@ -1,0 +1,118 @@
+using System;
+namespace VeriYapilarOdev
+{
+    class node
+    {
+        public int veri;
+        public node ileri;
+        
+        
+        public node(int veri)
+        {
+            this.veri = veri;
+            ileri = null;
+            
+        }
+    }
+
+    class tydliste
+    {
+        public node bas;
+        public node son;
+        public tydliste()
+        {
+            bas = null;
+            son = null;
+        }
+
+        public void basaEkle(node yeni)
+        {
+            if (bas == null)
+            {
+               
+                bas = yeni;
+                son = yeni;
+                
+            }
+            else
+            {
+                yeni.ileri = bas;
+                son.ileri = yeni;
+                bas = yeni;
+                
+            }
+        }
+
+        
+
+        public int say()
+        {
+            node temp = bas;
+            int sayac = 0;
+            while (temp != null)
+            {
+                sayac++;
+                temp = temp.ileri;
+            }
+            return sayac;
+        }
+        public void yaz()
+        {
+            node temp = bas;
+            while (temp.ileri != bas)
+            {
+                Console.Write(temp.veri + " -> ");
+                temp = temp.ileri;
+            }
+            
+        }
+        public void Josephus(int k)
+        {
+            node sonra = bas;
+            node once = son;
+            while (sonra.ileri != once)
+            {
+                for (int i = 0; i < k; i++)
+                {
+                    once = sonra;
+                    sonra = sonra.ileri;
+                }
+                once.ileri = sonra.ileri;
+                Console.WriteLine(sonra.veri + " olduruldu");
+                sonra = once.ileri;
+            }
+            Console.WriteLine("kazanan: "+ sonra.veri);
+
+
+        }
+        
+    }
+    class Odev
+    {
+        static void Main(String[] args)
+        {
+           
+            tydliste liste1 = new tydliste();
+
+            Console.WriteLine("uzunluk giriniz: ");
+            int uzunluk = Convert.ToInt32(Console.ReadLine());
+
+            for (int i = 0; i < uzunluk+1; i++)
+            {
+                node n = new node(i);
+                liste1.basaEkle(n);
+
+            }
+            liste1.yaz();
+
+            Console.WriteLine("\nhangi araliklarla atlansin: ");
+            int k = Convert.ToInt32(Console.ReadLine());
+
+            
+            liste1.Josephus(k);
+
+          
+
+        }
+    }
+}
