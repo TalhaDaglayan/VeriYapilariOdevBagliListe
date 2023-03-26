@@ -1,0 +1,166 @@
+using System;
+using System.Xml.Linq;
+
+namespace VeriYapilarOdev
+{
+    class node
+    {
+        public int veri;
+        public node ileri;
+        public node geri;
+
+        public node(int veri)
+        {
+            this.veri = veri;
+            ileri = null;
+            geri = null;
+        }
+    }
+
+    class cbliste
+    {
+        public node bas;
+        public node son;
+        public cbliste()
+        {
+            bas = null;
+            son = null;
+        }
+
+        public void sonaEkle(node yeni)
+        {
+            if (bas == null)
+                bas = yeni;
+            else
+                son.ileri = yeni;
+            yeni.geri = son;
+            son = yeni;
+        }
+
+        public bool TekrarSayiVarMi(int deger)
+        {
+            node temp = bas;
+            while(temp != null)
+            {
+                if (temp.veri == deger)
+                {
+                    return false;
+                }
+                temp=temp.ileri;
+            }
+            return true;
+        }
+        
+        public void sort()
+        {
+            node i = bas;
+            node j = bas.ileri;
+            node temp;
+
+            while(i!= null)
+            {
+                while(j!= null)
+                {
+                    if(i.veri == j.veri)
+                    {
+                        if (i == bas)
+                        {
+
+                        }
+                        else
+                        {
+                            
+                            temp = i.ileri;
+                            i.ileri = j.ileri;
+                            j.ileri = temp;
+
+                            if (i.ileri != null)
+                                i.ileri.geri = i;
+                            if (j.ileri != null)
+                                j.ileri.geri = j;
+
+                            temp = i.geri;
+                            i.geri = j.geri;
+                            j.geri = temp;
+
+                            if (i.geri != null)
+                                i.geri.ileri = i;
+                            if (j.geri != null)
+                                j.geri.ileri = j;
+
+                        }
+                    }
+                    j = j.ileri;
+                }
+                i=i.ileri;
+            }
+        }
+        
+
+        public void BinarySearch(int sayi)
+        {
+            node temp;
+
+
+        }
+        public int say()
+        {
+            node temp = bas;
+            int sayac = 0;
+            while (temp != null)
+            {
+                sayac++;
+                temp = temp.ileri;
+            }
+            return sayac;
+        }
+        public void yaz()
+        {
+            node temp = bas;
+            while (temp != null)
+            {
+                Console.Write(temp.veri + " -> ");
+                temp = temp.ileri;
+            }
+
+        }
+    }
+    class Odev
+    {
+        static void Main(String[] args)
+        {
+
+            Random rnd = new Random();
+            cbliste liste1 = new cbliste();
+
+            Console.WriteLine("uzunluk giriniz: ");
+            int uzunluk = Convert.ToInt32(Console.ReadLine());
+
+            int count = 0;
+
+            for (int i = 0; i < uzunluk; i++)
+            {
+                int rastSayi = rnd.Next(1, uzunluk);
+                
+
+                if (liste1.TekrarSayiVarMi(rastSayi))
+                {
+                    
+                    node n = new node(rastSayi);
+                    liste1.sonaEkle(n);
+                    count++;
+                }
+                
+              
+            }
+
+            liste1.sort();
+            
+
+            Console.WriteLine("sayi giriniz...");
+            int sayi = Convert.ToInt32(Console.ReadLine());
+
+            liste1.yaz();
+        }
+    }
+}
